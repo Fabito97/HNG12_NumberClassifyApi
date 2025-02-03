@@ -1,0 +1,50 @@
+# Ignore Visual Studio specific files
+.vs/
+*.user
+*.suo
+*.cache
+*.sln.docstates
+
+# Ignore build outputs
+bin/
+obj/
+out/
+debug/
+release/
+
+# Ignore dependencies
+packages/
+node_modules/
+wwwroot/lib/
+
+# Ignore .NET-related files
+project.lock.json
+project.fragment.lock.json
+global.json
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.tlog
+*.nlog
+*.err
+*.swp
+*.bak
+*.tmp
+*.DS_Store
+Thumbs.db
+
+
+# Ignore Docker-related files
+docker-compose.override.yml
+
+# Ignore compiled runtime files
+*.dll
+*.exe
+*.pdb
+*.mdb
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+.nuget/

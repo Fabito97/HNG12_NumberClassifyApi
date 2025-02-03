@@ -1,0 +1,6 @@
+@HNG12_NumberClassifyApi_HostAddress = http://localhost:5116
+
+GET {{HNG12_NumberClassifyApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
