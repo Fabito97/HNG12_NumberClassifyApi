@@ -92,3 +92,9 @@ The API is deployed and publicly accessible.
 - Accepts only valid integers as input.
 - Fast response time (< 500ms).
 - Returns responses in JSON format.
+
+
+
+
+
+
