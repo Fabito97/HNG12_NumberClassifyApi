@@ -12,32 +12,38 @@ namespace HNG12_NumberClassifyApi.Services
             _httpClient = httpClient;
         }
 
-        public async Task<NumberClassificationResult> ClassifyNumberAsync(int number)
+        public async Task<string> GetFunfactAsync(int number)
+        {
+            try
+            {
+                string response = await _httpClient.GetStringAsync($"http://numbersapi.com/{number}/math");
+                return response ?? "No fun facts available";
+            }
+            catch (HttpRequestException)
+            {
+                return $"An unexpected error occurred while retrieving fun fact for {number}";
+            }
+            catch (Exception)
+            {
+                return $"An unexpected error occurred";
+            }
+        }
+
+        public List<string> GetProperties(int number)
         {
             List<string> properties = new List<string>();
 
-            if (isArmstrong(number))
+            if (IsArmstrong(number))
                 properties.Add("Armstrong");
 
             bool isEven = number % 2 == 0;
 
             properties.Add( isEven ? "even" : "odd");
-
-            NumberClassificationResult classificationResult = new NumberClassificationResult()
-            {
-                number = number,
-                digit_sum = GetDigitSum(number),
-                is_perfect = isPerfect(number),
-                is_prime = IsPrime(number),
-                properties = properties.ToArray(),
-                fun_fact = await GetFunfactAsync(number)
-            };
-
-            return classificationResult;
-
+                        
+            return properties;
         }
 
-        public bool isArmstrong(int number)
+        public bool IsArmstrong(int number)
         {
             int temp = number;
             int sum = 0;
@@ -88,7 +94,7 @@ namespace HNG12_NumberClassifyApi.Services
             return sum;
         }
 
-        public bool isPerfect(int number)
+        public bool IsPerfect(int number)
         {
             if (number <= 1)
                 return false;
@@ -109,22 +115,6 @@ namespace HNG12_NumberClassifyApi.Services
             return sum == number;
         }
 
-        public async Task<string> GetFunfactAsync(int number)
-        {
-            try
-            {
-                string response = await _httpClient.GetStringAsync($"http://numbersapi.com/{number}/math");
-                return response ?? "No fun facts available";
-            }
-            catch (HttpRequestException)
-            {
-                return $"An unexpected error occurred while retrieving fun fact for {number}";
-            }
-            catch (Exception)
-            {
-                return $"An unexpected error occurred";
-            }
-        }
 
-            }
+    }
 }

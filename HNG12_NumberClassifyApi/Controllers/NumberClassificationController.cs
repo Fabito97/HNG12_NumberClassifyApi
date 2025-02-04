@@ -16,17 +16,26 @@ namespace HNG12_NumberClassifyApi.Controllers
             _classificationService = classificationService;
         }
 
-        [HttpGet("{number}")]
-        public async Task<IActionResult> GetNumber(string number)
+        [HttpGet]
+        public async Task<IActionResult> GetNumber([FromQuery]string number)
         {
-            if (!int.TryParse(number, out int Validnumber) || Validnumber < 1)
+            if (!int.TryParse(number, out int Validnumber))
             {
                 return BadRequest(new {number, error = true});
             }
 
-            var response = await _classificationService.ClassifyNumberAsync(Validnumber);
+            NumberClassificationResult classificationResult = new NumberClassificationResult()
+            {
+                number = Validnumber,
+                digit_sum = _classificationService.GetDigitSum(Validnumber),
+                is_perfect = _classificationService.IsPerfect(Validnumber),
+                is_prime = _classificationService.IsPrime(Validnumber),
+                properties = _classificationService.GetProperties(Validnumber).ToArray(),
+                fun_fact = await _classificationService.GetFunfactAsync(Validnumber)
+            };                   
+
            
-            return Ok(response);
+            return Ok(classificationResult);
         }
     }
 }
