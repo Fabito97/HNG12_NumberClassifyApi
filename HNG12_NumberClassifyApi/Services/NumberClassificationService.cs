@@ -12,26 +12,21 @@ namespace HNG12_NumberClassifyApi.Services
             _httpClient = httpClient;
         }
 
-
-        public async Task<NumberClassificationResult> ClassifyNumberAsync(int number)
+        public async Task<NumberClassificationResult> ClassifyNumber(int number)
         {
-            var digitSumTask = Task.Run(() => GetDigitSum(number));
-            var isPerfectTask = Task.Run(() => IsPerfect(number));
-            var isPrimeTask = Task.Run(() => IsPrime(number));
-            var propertiesTask = Task.Run(() => GetProperties(number));
-            var funFactTask = GetFunfactAsync(number); // This remains async
+            var funFactTask = GetFunfactAsync(number);
 
-            await Task.WhenAll(digitSumTask, isPerfectTask, isPrimeTask, propertiesTask, funFactTask);
-
-            return new NumberClassificationResult
+            NumberClassificationResult classificationResult = new NumberClassificationResult()
             {
                 number = number,
-                digit_sum = digitSumTask.Result,
-                is_perfect = isPerfectTask.Result,
-                is_prime = isPrimeTask.Result,
-                properties = propertiesTask.Result.ToArray(),
-                fun_fact = funFactTask.Result
+                digit_sum = GetDigitSum(number),
+                is_perfect = IsPerfect(number),
+                is_prime = IsPrime(number),
+                properties = GetProperties(number).ToArray(),
+                fun_fact = await funFactTask
             };
+
+            return classificationResult;
         }
 
         public async Task<string> GetFunfactAsync(int number)
@@ -50,7 +45,25 @@ namespace HNG12_NumberClassifyApi.Services
                 return $"An unexpected error occurred";
             }
         }
-        
+
+        //public async Task<string> GetFunfactAsync(int number)
+        //{
+              // Determine whether the external api takes too long to fetch
+        //    try
+        //    {
+        //        using var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(500)); // Set timeout to 500ms
+        //        return await _httpClient.GetStringAsync($"http://numbersapi.com/{number}/math", cts.Token);
+        //    }
+        //    catch (TaskCanceledException)
+        //    {
+        //        return "Fun fact retrieval timed out.";
+        //    }
+        //    catch (HttpRequestException)
+        //    {
+        //        return "Error retrieving fun fact.";
+        //    }
+        //}
+
         public List<string> GetProperties(int number)
         {
             List<string> properties = new List<string>();
