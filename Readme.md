@@ -49,7 +49,7 @@ This API takes a number as input and returns interesting mathematical properties
 ### Example Request
 
 ```bash
-GET http://<your-domain.com>/api/classify-number?number=371
+GET https://hng12-numberclassifyapi.onrender.com/api/classify-number?number=371
 ```
 
 ### Example Response
@@ -61,13 +61,13 @@ GET http://<your-domain.com>/api/classify-number?number=371
     "is_perfect": false,
     "properties": ["armstrong", "odd"],
     "digit_sum": 11,
-    "fun_fact": "371 is an Armstrong number because 3^3 + 7^3 + 1^3 = 371"
+    "fun_fact": "371 is a narcissistic number"
 }
 ```
 
 ## Technology Stack
 - **Backend**: C# with ASP.NET Core Web API
-- **Deployment**: [Insert your deployment platform here, e.g., Azure, AWS, Heroku]
+- **Deployment**: [Render]
 - **External API**: Numbers API (http://numbersapi.com/)
 
 ## CORS
@@ -80,47 +80,15 @@ The API handles Cross-Origin Resource Sharing (CORS), allowing requests from dif
 ## Version Control
 The source code is hosted on GitHub.
 
-- Repository: [Insert GitHub repository link here]
-- Branch: `main` (or any other relevant branch)
+- Repository: [https://github.com/Fabito97/HNG12_NumberClassifyApi]
+- Branch: `main` 
 
 ## Deployment
 The API is deployed and publicly accessible.
 
-- **Endpoint**: [Insert deployed API URL here, e.g., https://your-domain.com/api/classify-number]
+- **Endpoint**: [Insert deployed API URL here, e.g., https://hng12-numberclassifyapi.onrender.com/api/classify-number]
 
 ## Requirements
 - Accepts only valid integers as input.
 - Fast response time (< 500ms).
 - Returns responses in JSON format.
-
-## Setup
-### Prerequisites
-- Install [.NET SDK](https://dotnet.microsoft.com/download) (version 8.0 or higher).
-- Ensure the Numbers API is reachable and operational.
-
-### Local Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/number-classification-api.git
-   cd number-classification-api
-   ```
-
-2. Restore the dependencies:
-   ```bash
-   dotnet restore
-   ```
-
-3. Build the project:
-   ```bash
-   dotnet build
-   ```
-
-4. Run the API locally:
-   ```bash
-   dotnet run
-   ```
-
-5. Access the API locally at `http://localhost:5000/api/classify-number?number=371`.
-
-## Testing
-Make sure to test the API thoroughly with various valid and invalid inputs to ensure it works as expected.
