@@ -24,13 +24,22 @@ namespace HNG12_NumberClassifyApi.Controllers
                 return BadRequest(new {number, error = true});
             }
 
+            var digitSumTask = Task.Run(() => _classificationService.GetDigitSum(Validnumber));
+            var isPerfectTask = Task.Run(() => _classificationService.IsPerfect(Validnumber));
+            var isPrimeTask = Task.Run(() => _classificationService.IsPrime(Validnumber));
+            var propertiesTask = Task.Run(() => _classificationService.GetProperties(Validnumber).ToArray());
+            var funFactTask = await _classificationService.GetFunfactAsync(Validnumber);
+
+            await Task.WhenAll(digitSumTask, isPerfectTask, isPrimeTask, propertiesTask);
+
+
             NumberClassificationResult classificationResult = new NumberClassificationResult()
             {
                 number = Validnumber,
-                digit_sum = _classificationService.GetDigitSum(Validnumber),
-                is_perfect = _classificationService.IsPerfect(Validnumber),
-                is_prime = _classificationService.IsPrime(Validnumber),
-                properties = _classificationService.GetProperties(Validnumber).ToArray(),
+                digit_sum = digitSumTask.Result,
+                is_perfect = isPerfectTask.Result,
+                is_prime = isPrimeTask.Result,
+                properties =propertiesTask.Result,
                 fun_fact = await _classificationService.GetFunfactAsync(Validnumber)
             };                   
 

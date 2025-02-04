@@ -12,6 +12,28 @@ namespace HNG12_NumberClassifyApi.Services
             _httpClient = httpClient;
         }
 
+
+        public async Task<NumberClassificationResult> ClassifyNumberAsync(int number)
+        {
+            var digitSumTask = Task.Run(() => GetDigitSum(number));
+            var isPerfectTask = Task.Run(() => IsPerfect(number));
+            var isPrimeTask = Task.Run(() => IsPrime(number));
+            var propertiesTask = Task.Run(() => GetProperties(number));
+            var funFactTask = GetFunfactAsync(number); // This remains async
+
+            await Task.WhenAll(digitSumTask, isPerfectTask, isPrimeTask, propertiesTask, funFactTask);
+
+            return new NumberClassificationResult
+            {
+                number = number,
+                digit_sum = digitSumTask.Result,
+                is_perfect = isPerfectTask.Result,
+                is_prime = isPrimeTask.Result,
+                properties = propertiesTask.Result.ToArray(),
+                fun_fact = funFactTask.Result
+            };
+        }
+
         public async Task<string> GetFunfactAsync(int number)
         {
             try
@@ -28,7 +50,7 @@ namespace HNG12_NumberClassifyApi.Services
                 return $"An unexpected error occurred";
             }
         }
-
+        
         public List<string> GetProperties(int number)
         {
             List<string> properties = new List<string>();
