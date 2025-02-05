@@ -69,7 +69,7 @@ namespace HNG12_NumberClassifyApi.Services
             List<string> properties = new List<string>();
 
             if (IsArmstrong(number))
-                properties.Add("Armstrong");
+                properties.Add("armstrong");
 
             bool isEven = number % 2 == 0;
 
